@@ -16,7 +16,7 @@ scaler = StandardScaler()
 clf = Perceptron(max_iter=max_iter, tol=None, random_state=random_state)
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
-    ('poly_features', PolynomialFeatures(degree=10)),
+    ('poly_features', PolynomialFeatures(degree=3)),
     ('perceptron', Perceptron(max_iter=max_iter, tol=None, random_state=random_state))
 ])
 
