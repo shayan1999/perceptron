@@ -1,0 +1,9 @@
+_____first train accuracy_____
+Training Accuracy: 94.00%
+Training Accuracy: 98.00%
+______________________________
+__________polynomials_________ 
+Degree 2 - Train Accuracy: 0.94, Validation Accuracy: 0.94
+Degree 3 - Train Accuracy: 1.00, Validation Accuracy: 1.00
+Degree 5 - Train Accuracy: 1.00, Validation Accuracy: 1.00
+Degree 10 - Train Accuracy: 1.00, Validation Accuracy: 1.00
