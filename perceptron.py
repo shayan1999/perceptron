@@ -1,11 +1,9 @@
-import pandas as pd;
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from variables import *
-from plots import *
+from outputs import *
 
 # question 1
 train_data, val_data = train_test_split(data, test_size=50, random_state=random_state)
@@ -25,6 +23,10 @@ first_train_accuracy = accuracy_score(train_data['labels'], train_predictions)
 
 val_predictions = clf.predict(val_data_scaled)
 first_val_accuracy = accuracy_score(val_data['labels'], val_predictions)
+
+first_train_weights= clf.coef_
+
+first_train_bias = clf.intercept_
 
 # decision boundary
 x_min, x_max = train_data_scaled[:, 0].min() - 1, train_data_scaled[:, 0].max() + 1
@@ -50,21 +52,24 @@ def evaluate_polynomial(degree):
     val_accuracy = accuracy_score(val_data['labels'], val_predictions)
     
     wrong_idx = np.where(val_data['labels'] != val_predictions)[0]
-    
-    return train_accuracy, val_accuracy, wrong_idx
+    weights= clf.coef_
+    bias= clf.intercept_
 
+    return train_accuracy, val_accuracy, wrong_idx, weights, bias
+
+#question 5
 degrees = [2, 3, 5, 10]
 results = {}
 for degree in degrees:
-    train_accuracy, val_accuracy, wrong_idx = evaluate_polynomial(degree)
-    results[degree] = {'Train': train_accuracy, 'Validation': val_accuracy, 'Wrongs': wrong_idx}
+    train_accuracy, val_accuracy, wrong_idx, weights, bias = evaluate_polynomial(degree)
+    results[degree] = {'Train': train_accuracy, 'Validation': val_accuracy, 'Wrongs': wrong_idx, 'Weights': weights, 'Bias': bias}
     plot_wrong_predictions_poly(wrong_idx, train_data_scaled, train_data['labels'], val_data_scaled, val_data['labels'], degree)
 
-
+#question 6
 test_data_scaled = scaler.transform(test_data[['x1', 'x2']])
 
 pipeline.fit(train_data[['x1', 'x2']], train_data['labels'])
 test_predictions = pipeline.predict(test_data[['x1', 'x2']])
 
-result_maker(first_train_accuracy, first_val_accuracy, results, test_predictions)
+result_maker(first_train_accuracy, first_val_accuracy, results, test_predictions, first_train_weights, first_train_bias)
 actual_data_plot(test_data_scaled, test_predictions, 'test_data', 'Test Data Predictions (Normalized)')
